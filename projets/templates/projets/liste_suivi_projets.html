@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Suivi d’Exécution des Projets</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f2f6f3; margin: 0; padding: 0; }
+        .header { background-color: #388E3C; color: white; padding: 20px; text-align: center; border-bottom: 4px solid #2E7D32; }
+        .header a { color: white; text-decoration: none; font-weight: bold; float: right; margin-right: 20px; }
+        .container { max-width: 1000px; margin: 40px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 3px 10px rgba(0,0,0,0.15); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+        tr:hover { background-color: #f1f1f1; }
+        .btn-suivi { background-color: #2d89ef; color: white; padding: 6px 10px; border-radius: 5px; text-decoration: none; font-weight: bold; }
+        .btn-suivi:hover { background-color: #1b5fbe; }
+        
+        .dropdown {
+        position: relative;
+        display: inline-block;
+        }
+
+        .dropbtn {
+        color: #2d89ef;
+        font-weight: bold;
+        text-decoration: none;
+        cursor: pointer;
+        }
+
+        .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 140px;
+        box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+        border-radius: 5px;
+        z-index: 1;
+        }
+
+        .dropdown-content a {
+        color: black;
+        padding: 8px 12px;
+        text-decoration: none;
+        display: block;
+        }
+
+        .dropdown-content a:hover {
+        background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+        display: block;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>📊 Suivi d’Exécution des Projets</h1>
+        <a href="{% url 'dashboard' %}">⬅ Retour au tableau de bord</a>
+    </div>
+
+    <div class="container">
+        <table>
+            <tr>
+                <th>Intitulé du Projet</th>
+                <th>Province</th>
+                <th>Commune</th>
+                <th>Situation</th>
+                <th>Action</th>
+            </tr>
+            {% for p in projets %}
+            <tr>
+                <td>
+                <div class="dropdown">
+                    <a href="#" class="dropbtn">{{ p.intitule }}</a>
+                    <div class="dropdown-content">
+                    <a href="{% url 'projet_detail' p.id %}">👁️ Afficher</a>
+                    <a href="{% url 'projet_edit' p.id %}">✏️ Modifier</a>
+                    <a href="{% url 'projet_delete' p.id %}">🗑️ Supprimer</a>
+                    </div>
+                </div>
+                </td>
+                <td>{{ p.province }}</td>
+                <td>{{ p.commune }}</td>
+                <td>{{ p.situation }}</td>
+                <td><a class="btn-suivi" href="{% url 'suivi_detail' p.id %}">Suivre l’exécution</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="5" style="text-align:center;">Aucun projet disponible</td></tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

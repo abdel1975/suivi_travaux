@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Détails du projet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7f5;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #2E7D32;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .field {
+      margin-bottom: 12px;
+    }
+    .label {
+      font-weight: bold;
+      color: #333;
+    }
+    .value {
+      margin-left: 10px;
+      color: #555;
+    }
+    .btn {
+      display: inline-block;
+      background: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .btn:hover {
+      background: #388E3C;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>📄 Détails du Projet</h2>
+
+    <div class="field"><span class="label">Intitulé du Projet :</span><span class="value">{{ projet.intitule }}</span></div>
+    <div class="field"><span class="label">Province :</span><span class="value">{{ projet.province }}</span></div>
+    <div class="field"><span class="label">Commune :</span><span class="value">{{ projet.commune }}</span></div>
+    <div class="field"><span class="label">Topographe :</span><span class="value">{{ projet.topographe }}</span></div>
+    <div class="field"><span class="label">Étude Géotechnique :</span><span class="value">{{ projet.etude_geotechnique }}</span></div>
+    <div class="field"><span class="label">Architecte :</span><span class="value">{{ projet.architecte }}</span></div>
+    <div class="field"><span class="label">Étude Technique :</span><span class="value">{{ projet.etude_technique }}</span></div>
+    <div class="field"><span class="label">Contrôle Technique :</span><span class="value">{{ projet.control_technique }}</span></div>
+    <div class="field"><span class="label">Délai d’Exécution :</span><span class="value">{{ projet.delai_execution }}</span></div>
+    <div class="field"><span class="label">Date de Début :</span><span class="value">{{ projet.date_debut }}</span></div>
+    <div class="field"><span class="label">Date de Fin Prévue :</span><span class="value">{{ projet.date_fin_prevue }}</span></div>
+    <div class="field"><span class="label">Situation :</span><span class="value">{{ projet.situation }}</span></div>
+
+    <br>
+    <a href="{% url 'liste_suivi_projets' %}" class="btn">⬅ Retour à la liste</a>
+  </div>
+</body>
+</html>

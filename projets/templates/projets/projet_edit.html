@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Modifier un projet</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f7f5;
+      margin: 0;
+      padding: 20px;
+    }
+    form {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #2E7D32;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 12px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background: #388E3C;
+    }
+  </style>
+</head>
+
+<body>
+  <form method="post">
+    {% csrf_token %}
+    <h2>✏️ Modifier le projet</h2>
+
+    <label>Intitulé du Projet :</label>
+    <input type="text" name="intitule" value="{{ projet.intitule }}" required>
+
+    <label>Province :</label>
+    <input type="text" name="province" value="{{ projet.province }}" {% if user.userprofile.role == 'provincial' %}readonly{% endif %}>
+
+    <label>Commune :</label>
+    <input type="text" name="commune" value="{{ projet.commune }}">
+
+    <label>Topographe :</label>
+    <input type="text" name="topographe" value="{{ projet.topographe }}">
+
+    <label>Étude Géotechnique :</label>
+    <input type="text" name="etude_geotechnique" value="{{ projet.etude_geotechnique }}">
+
+    <label>Architecte :</label>
+    <input type="text" name="architecte" value="{{ projet.architecte }}">
+
+    <label>Étude Technique :</label>
+    <input type="text" name="etude_technique" value="{{ projet.etude_technique }}">
+
+    <label>Contrôle Technique :</label>
+    <input type="text" name="control_technique" value="{{ projet.control_technique }}">
+
+    <label>Délai d’Exécution :</label>
+    <input type="text" name="delai_execution" value="{{ projet.delai_execution }}">
+
+    <label>Date de Début :</label>
+    <input type="date" name="date_debut" value="{{ projet.date_debut|date:'Y-m-d' }}">
+
+    <label>Date de Fin Prévue :</label>
+    <input type="date" name="date_fin_prevue" value="{{ projet.date_fin_prevue|date:'Y-m-d' }}">
+
+    <label>Situation :</label>
+    <select name="situation">
+      <option value="en_cours" {% if projet.situation == 'en_cours' %}selected{% endif %}>En cours</option>
+      <option value="acheve" {% if projet.situation == 'acheve' %}selected{% endif %}>Achevé</option>
+      <option value="en_arret" {% if projet.situation == 'en_arret' %}selected{% endif %}>En arrêt</option>
+    </select>
+
+    <button type="submit">💾 Enregistrer les modifications</button>
+  </form>
+</body>
+</html>

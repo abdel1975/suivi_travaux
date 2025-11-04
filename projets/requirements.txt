@@ -1,0 +1,6 @@
+django
+gunicorn
+pandas
+matplotlib
+requests
+psycopg2-binary

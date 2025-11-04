@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Suivi d’Exécution du Projet</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f2f6f3; margin: 0; padding: 20px; }
+        form { max-width: 900px; margin: auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.2); }
+        h2 { text-align: center; color: #2E7D32; }
+        h3 { color: #388E3C; border-bottom: 1px solid #ddd; padding-bottom: 5px; margin-top: 25px; }
+        label { display: block; margin-top: 10px; font-weight: bold; }
+        input { width: 100%; padding: 8px; margin-top: 4px; border-radius: 5px; border: 1px solid #ccc; }
+        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; margin-top: 20px; display: block; width: 100%; font-size: 16px; }
+        button:hover { background: #388E3C; }
+    </style>
+</head>
+<body>
+    <h2>Suivi d’Exécution du Projet : {{ projet.intitule }}</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <h3>📏 Topographe</h3>
+        <label>Date de début:</label><input type="date" name="topo_date_debut">
+        <label>Date de fin:</label><input type="date" name="topo_date_fin">
+        <label>Montant (DH):</label><input type="number" step="0.01" name="topo_montant">
+
+        <h3>🧪 Étude Géotechnique</h3>
+        <label>Date de début:</label><input type="date" name="geo_date_debut">
+        <label>Date de fin:</label><input type="date" name="geo_date_fin">
+        <label>Montant (DH):</label><input type="number" step="0.01" name="geo_montant">
+
+        <h3>🏛 Architecte</h3>
+        <label>Date de début:</label><input type="date" name="archi_date_debut">
+        <label>Date de fin:</label><input type="date" name="archi_date_fin">
+        <label>Montant (DH):</label><input type="number" step="0.01" name="archi_montant">
+
+        <h3>📐 Étude Technique</h3>
+        <label>Date de début:</label><input type="date" name="etud_date_debut">
+        <label>Date de fin:</label><input type="date" name="etud_date_fin">
+        <label>Montant (DH):</label><input type="number" step="0.01" name="etud_montant">
+
+        <h3>⚙️ Contrôle Technique</h3>
+        <label>Date de début:</label><input type="date" name="ctrl_date_debut">
+        <label>Date de fin:</label><input type="date" name="ctrl_date_fin">
+        <label>Montant (DH):</label><input type="number" step="0.01" name="ctrl_montant">
+
+        <h3>🏗 Travaux de Construction</h3>
+        <label>Date de début:</label><input type="date" name="trav_date_debut">
+        <label>Date de fin:</label><input type="date" name="trav_date_fin">
+        <label>Montant (DH):</label><input type="number" step="0.01" name="trav_montant">
+
+        <h3>🚫 Date d'arrêt (si applicable)</h3>
+        <input type="date" name="date_arret">
+
+        <h3>📊 Taux d’avancement (%)</h3>
+        <input type="number" name="taux_avancement" min="0" max="100">
+
+        <h3>💰 Taux de paiement (%)</h3>
+        <input type="number" name="taux_paiement" min="0" max="100">
+
+        <button type="submit">💾 Enregistrer le suivi</button>
+    </form>
+</body>
+</html>

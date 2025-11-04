@@ -1,0 +1,6 @@
+<h2>Supprimer le projet "{{ projet.intitule }}" ?</h2>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">🗑️ Confirmer la suppression</button>
+  <a href="{% url 'liste_suivi_projets' %}">Annuler</a>
+</form>

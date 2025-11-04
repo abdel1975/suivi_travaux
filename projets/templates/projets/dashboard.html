@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tableau de bord des projets</title>
+    
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #4CAF50;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #388E3C;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid #2E7D32;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .filter {
+            text-align: center;
+            margin-top: 10px;
+            color: white;
+        }
+
+        select {
+            padding: 6px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .actions {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .actions a {
+            background-color: #2d89ef;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 8px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            border-radius: 10px;
+            padding: 15px;
+            width: 22%;
+            min-width: 180px;
+            text-align: center;
+            margin: 10px;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* 🎨 Couleurs des cartes */
+        .card.total { background-color: #2E7D32; }
+        .card.en-cours { background-color: #FF9800; }
+        .card.acheve { background-color: #2196F3; }
+        .card.en-arret { background-color: #F44336; }
+
+        .card h3 {
+            margin: 10px 0;
+            font-size: 1.2em;
+        }
+
+        .card p {
+            font-size: 1.8em;
+            margin: 0;
+        }
+
+        .export-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid white;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .export-btn:hover {
+            background: rgba(255,255,255,0.35);
+        }
+
+        #map {
+            height: 500px;
+            margin: 40px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img src="{% static 'projets/logo_men.jpg' %}" alt="Logo" 
+             style="height:120px; float:left; margin-left:30px; border-radius:8px; vertical-align:middle;">
+
+        <div style="float:right; text-align:right; margin-right:30px;">
+            <p style="margin:0; font-size:16px;">
+                👋 Bienvenue <strong>{{ user.username }}</strong>
+                {% if user_profile.role == 'provincial' %}
+                    — Province : <strong>{{ user_profile.province }}</strong>
+                {% else %}
+                    — <strong>Utilisateur régional</strong>
+                {% endif %}
+            </p>
+            <a href="{% url 'logout' %}" 
+            style="color:white; text-decoration:none; font-weight:bold; display:inline-block; margin-top:5px;">
+            🔒 Déconnexion
+            </a>
+        </div>
+
+        <h1 style="margin:0; padding-top:30px;">Tableau de bord des projets</h1>
+    </div>
+
+    {% if user_profile.role == 'regional' %}
+    <div class="filter">
+        <form method="get" action="">
+            <label for="province"><strong>Filtrer par province :</strong></label>
+            <select name="province" id="province" onchange="this.form.submit()">
+                <option value="">-- Toutes les provinces --</option>
+                {% for province in provinces %}
+                    <option value="{{ province }}" {% if selected_province == province %}selected{% endif %}>
+                        {{ province }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="actions">
+        <a href="{% url 'ajouter_projet' %}">➕ Ajouter un projet</a>
+        <a href="{% url 'liste_suivi_projets' %}" style="background-color:#f57c00;">
+            📊 Suivi d'Exécution des Projets
+        </a>
+    </div>
+
+    <!-- 🎨 Section Statistiques avec fond coloré -->
+    <div class="stats">
+        <div class="card total">
+            <h3>Total</h3>
+            <p>{{ total }}</p>
+            <form action="{% url 'export_excel' 'tous' %}" method="get">
+                <button type="submit" class="export-btn">⬇️ Exporter Excel</button>
+            </form>
+        </div>
+
+        <div class="card en-cours">
+            <h3>En cours</h3>
+            <p>{{ en_cours }}</p>
+            <form action="{% url 'export_excel' 'en_cours' %}" method="get">
+                <button type="submit" class="export-btn">⬇️ Exporter Excel</button>
+            </form>
+        </div>
+
+        <div class="card acheve">
+            <h3>Achevés</h3>
+            <p>{{ termine }}</p>
+            <form action="{% url 'export_excel' 'acheve' %}" method="get">
+                <button type="submit" class="export-btn">⬇️ Exporter Excel</button>
+            </form>
+        </div>
+
+        <div class="card en-arret">
+            <h3>En arrêt</h3>
+            <p>{{ en_retard }}</p>
+            <form action="{% url 'export_excel' 'en_arret' %}" method="get">
+                <button type="submit" class="export-btn">⬇️ Exporter Excel</button>
+            </form>
+        </div>
+    </div>
+
+    <h2 style="text-align:center; color:white;">Carte des projets</h2>
+    <div id="map"></div>
+    <script id="projets-data" type="application/json">
+        {{ projets_json|safe }}
+    </script>
+
+    <script>
+        // 1) Read JSON safely (no JS string escaping needed)
+        let projets = [];
+        try {
+            const raw = document.getElementById('projets-data')?.textContent?.trim() || '[]';
+            projets = JSON.parse(raw);
+        } catch (e) {
+            console.error('❌ Projets JSON parse error:', e);
+            projets = [];
+        }
+
+        // 2) Init map
+        const map = L.map('map').setView([31.7917, -7.0926], 6);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        // 3) Test marker (you can remove after testing)
+        //L.marker([33.5731, -7.5898]).addTo(map).bindPopup('📍 Test Casablanca');
+
+        // 4) Color by situation
+        function getColor(situation) {
+            switch (situation) {
+            case 'en_cours': return 'orange';
+            case 'acheve': return 'green';
+            case 'en_arret': return 'red';
+            default: return 'blue';
+            }
+        }
+
+        // 5) Add markers (avoid template literals to prevent accidental backtick issues)
+        projets.forEach(p => {
+            if (p.latitude && p.longitude) {
+            const marker = L.circleMarker([p.latitude, p.longitude], {
+                color: getColor(p.situation),
+                radius: 8,
+                fillOpacity: 0.8
+            }).addTo(map);
+
+            const html =
+                '<b>' + (p.intitule || '') + '</b><br>' +
+                'Province: ' + (p.province || '') + '<br>' +
+                'Commune: ' + (p.commune || '') + '<br>' +
+                'Situation: ' + (p.situation || '');
+
+            marker.bindPopup(html);
+            }
+        });
+    </script>
+
+</body>
+</html>
