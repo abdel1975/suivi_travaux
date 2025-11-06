@@ -244,4 +244,10 @@ def projet_delete(request, projet_id):
     return render(request, 'projets/projet_delete_confirm.html', {'projet': projet})
 
 
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
+def logout_user(request):
+    """Déconnecte l’utilisateur et renvoie vers la page de connexion"""
+    logout(request)
+    return redirect('login')  # ✅ renvoie vers la page login

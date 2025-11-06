@@ -56,7 +56,7 @@ ROOT_URLCONF = 'suivi_travaux.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / 'templates' ],  # ✅ important
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,6 +69,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'suivi_travaux.wsgi.application'
 
@@ -131,3 +133,4 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "projets" / "static"]
+
