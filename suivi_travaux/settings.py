@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-53@9h**$!-(($csw$^6o2h-ic)if_)d-*1m=ehq=3@gzyp#fo_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -128,9 +129,16 @@ USE_TZ = True
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'dashboard'
 LOGOUT_REDIRECT_URL = 'login'
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
-STATIC_URL = 'static/'
+
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "projets" / "static"]
+
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
